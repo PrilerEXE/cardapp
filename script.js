@@ -61,7 +61,7 @@ window.addEventListener("load", function() {
                 } else if (_.guess == $(this).attr("data-id") && !$(this).hasClass("picked")) {
                     $(".picked").addClass("matched");
                     _.guess = null;
-                    _.score += 500; // Начисляем 500 баллов за пару
+                    _.score += 1000; // Начисляем 1000 баллов за пару
                     _.updateScoreDisplay();
                     // Проверка, если все карточки открыты
                     if ($(".matched").length == $(".card").length) {
@@ -93,11 +93,11 @@ window.addEventListener("load", function() {
             var minutes = Math.floor(this.timeLeft / 60);
             var seconds = this.timeLeft % 60;
             if (seconds < 10) seconds = "0" + seconds;
-            this.$timerDisplay.text("Время: " + minutes + ":" + seconds);
+            this.$timerDisplay.text("Таймер: " + minutes + ":" + seconds);
         },
 
         updateScoreDisplay: function() {
-            this.$scoreDisplay.text("Очки: " + this.score);
+            this.$scoreDisplay.text("Алмазы: " + this.score );
         },
 
         endGame: function() {
@@ -115,9 +115,11 @@ window.addEventListener("load", function() {
         },
 
         claimReward: function() {
+            const prize = Math.floor(this.score / 1000); // Рассчитываем количество "алмазов" на основе счета
             if (window.Telegram && Telegram.WebApp) {
-                Telegram.WebApp.sendData(this.score.toString()); // Отправляем количество баллов в виде строки
+                Telegram.WebApp.sendData(`Ваш выигрыш: ${prize} алмазов`);
                 alert("Награда отправлена!");
+                Telegram.WebApp.close(); // Закрываем веб-приложение после отправки награды
             } else {
                 alert("Telegram Web App не поддерживается.");
             }
@@ -151,134 +153,32 @@ window.addEventListener("load", function() {
 
     // карточки
     var cards = [
-        {	
-			// название
-			name: "AgentHop",
-			// адрес картинки
-			img: "./img/AgentHop.png",
-			// порядковый номер пары
-			id: 1,
-		},
-		{
-			name: "Arvon",
-			img: "./img/Arvon.png",
-			id: 2
-		},
-		{
-			name: "Beaston",
-			img: "./img/Beaston.png",
-			id: 3
-		},
-		{
-			name: "DetectivePanda",
-			img: "./img/DetectivePanda.png",
-			id: 4
-		}, 
-		{
-			name: "Dr.Beanie",
-			img: "./img/Dr.Beanie.png",
-			id: 5
-		},
-		{
-			name: "Dreki",
-			img: "./img/Dreki.png",
-			id: 6
-		},
-		{
-			name: "Falco",
-			img: "./img/Falco.png",
-			id: 7
-		},
-		{
-			name: "Fang",
-			img: "./img/Fang.png",
-			id: 8
-		},
-		{
-			name: "Finn",
-			img: "./img/Finn.png",
-			id: 9
-		},
-		{
-			name: "Flash",
-			img: "./img/Flash.png",
-			id: 10
-		},
-		{
-			name: "Hoot",
-			img: "./img/Hoot.png",
-			id: 11
-		},
-		{
-			name: "Kactus",
-			img: "./img/Kactus.png",
-			id: 12
-		},
-		{
-			name: "Moony",
-			img: "./img/Moony.png",
-			id: 13
-		},
-		{
-			name: "Mr.Waggor",
-			img: "./img/Mr.Waggor.png",
-			id: 14
-		},
-		{
-			name: "NightPanther",
-			img: "./img/NightPanther.png",
-			id: 15
-		},
-		{
-			name: "Ottero",
-			img: "./img/Ottero.png",
-			id: 16
-		},
-		{
-			name: "Pug",
-			img: "./img/Pug.png",
-			id: 17
-		},
-		{
-			name: "Robo",
-			img: "./img/Robo.png",
-			id: 18
-		},
-		{
-			name: "Rockie",
-			img: "./img/Rockie.png",
-			id: 19
-		},
-		{
-			name: "SenseiTig",
-			img: "./img/SenseiTig.png",
-			id: 20
-		},
-		{
-			name: "Shiba",
-			img: "./img/Shiba.png",
-			id: 21
-		},
-		{
-			name: "SpiritFox",
-			img: "./img/SpiritFox.png",
-			id: 22
-		},
-		{
-			name: "Yeti",
-			img: "./img/Yeti.png",
-			id: 23
-		},
-		{
-			name: "Zasil",
-			img: "./img/Zasil.png",
-			id: 24
-		},
-
-	];
+        { name: "AgentHop", img: "./img/AgentHop.png", id: 1 },
+        { name: "Arvon", img: "./img/Arvon.png", id: 2 },
+        { name: "Beaston", img: "./img/Beaston.png", id: 3 },
+        { name: "DetectivePanda", img: "./img/DetectivePanda.png", id: 4 }, 
+        { name: "Dr.Beanie", img: "./img/Dr.Beanie.png", id: 5 },
+        { name: "Dreki", img: "./img/Dreki.png", id: 6 },
+        { name: "Falco", img: "./img/Falco.png", id: 7 },
+        { name: "Fang", img: "./img/Fang.png", id: 8 },
+        { name: "Finn", img: "./img/Finn.png", id: 9 },
+        { name: "Flash", img: "./img/Flash.png", id: 10 },
+        { name: "Hoot", img: "./img/Hoot.png", id: 11 },
+        { name: "Kactus", img: "./img/Kactus.png", id: 12 },
+        { name: "Moony", img: "./img/Moony.png", id: 13 },
+        { name: "Mr.Waggor", img: "./img/Mr.Waggor.png", id: 14 },
+        { name: "NightPanther", img: "./img/NightPanther.png", id: 15 },
+        { name: "Ottero", img: "./img/Ottero.png", id: 16 },
+        { name: "Pug", img: "./img/Pug.png", id: 17 },
+        { name: "Robo", img: "./img/Robo.png", id: 18 },
+        { name: "Rockie", img: "./img/Rockie.png", id: 19 },
+        { name: "SenseiTig", img: "./img/SenseiTig.png", id: 20 },
+        { name: "Shiba", img: "./img/Shiba.png", id: 21 },
+        { name: "SpiritFox", img: "./img/SpiritFox.png", id: 22 },
+        { name: "Yeti", img: "./img/Yeti.png", id: 23 },
+        { name: "Zasil", img: "./img/Zasil.png", id: 24 }
+    ];
 
     Memory.init(cards);
 
 })();
-
-	
