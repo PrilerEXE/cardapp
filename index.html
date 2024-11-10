@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Найди пару</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- подключаем нормализатор CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
@@ -17,8 +18,8 @@
 
   <!-- таймер и счетчик отображаются наверху страницы -->
   <div class="header">
-    <div class="timer">Время: 05:00</div>
-    <div class="score">Очки: 0</div>
+    <div class="timer">Таймер: 05:00</div>
+    <div class="score">Алмазы: 0</div>
   </div>
 
   <!-- основной блок с игрой -->
@@ -26,10 +27,12 @@
     <div class="game"></div>
     <div class="modal-overlay">
       <div class="modal">
+        <!-- иконка или картинка над текстом выигрыша -->
+        <img src="./img/caseunlock.webp" alt="Победа!" class="winner-icon">
         <!-- сообщение о завершении игры -->
         <h2 class="winner">Игра окончена!</h2>
         <!-- место для отображения итогового счета -->
-        <p class="final-score">Ваш счет: <span id="finalScore">0</span></p>
+        <p class="final-score">Ваш выигрыш: <span id="finalScore">0</span>💎</p>
         <!-- кнопка для забора награды -->
         <button class="claim">Забрать</button>
       </div>
