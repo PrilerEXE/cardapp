@@ -97,7 +97,7 @@ window.addEventListener("load", function() {
         },
 
         updateScoreDisplay: function() {
-            this.$scoreDisplay.text("Алмазы: " + this.score );
+            this.$scoreDisplay.text("Алмазы: " + this.score + " 💎");
         },
 
         endGame: function() {
@@ -117,7 +117,7 @@ window.addEventListener("load", function() {
         claimReward: function() {
             const prize = Math.floor(this.score / 1000); // Рассчитываем количество "алмазов" на основе счета
             // Переход по ссылке с передачей выигрыша в качестве параметра
-            const rewardUrl = `https://ffcis.com/reward-app`;
+            const rewardUrl = `https://example.com/reward?prize=${prize}`;
             window.location.href = rewardUrl; // Переход по URL
         },
 
