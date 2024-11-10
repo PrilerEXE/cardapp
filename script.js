@@ -1,3 +1,8 @@
+window.addEventListener("load", function() {
+    const preloader = document.querySelector(".preloader");
+    preloader.style.display = "none"; // Скрываем прелоадер после загрузки страницы
+});
+
 (function(){
     var Memory = {
         timer: null,
