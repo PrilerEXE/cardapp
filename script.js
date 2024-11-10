@@ -1,6 +1,13 @@
+// Подключаем VK Bridge
+import bridge from '@vkontakte/vk-bridge';
+
+// Инициализация VK Bridge при загрузке приложения
 window.addEventListener("load", function() {
     const preloader = document.querySelector(".preloader");
     preloader.style.display = "none"; // Скрываем прелоадер после загрузки страницы
+
+    // Инициализируем VK Bridge
+    bridge.send("VKWebAppInit");
 });
 
 (function(){
@@ -116,9 +123,18 @@ window.addEventListener("load", function() {
 
         claimReward: function() {
             const prize = Math.floor(this.score / 1000); // Рассчитываем количество "алмазов" на основе счета
-            // Переход по ссылке с передачей выигрыша в качестве параметра
-            const rewardUrl = `https://example.com/reward?prize=${prize}`;
-            window.location.href = rewardUrl; // Переход по URL
+
+            // Используем VK Bridge для отправки данных о выигрыше
+            bridge.send("VKWebAppShowNativeAds", {ad_format:"reward"}).then((data) => { 
+                if (data.result) {
+                    bridge.send("VKWebAppShowWallPostBox", {
+                        "message": `Ваш выигрыш: ${prize} алмазов 💎`
+                    });
+                }
+            }).catch((error) => {
+                console.error("VK Bridge error:", error);
+                alert("Ошибка при отправке награды.");
+            });
         },
 
         shuffle: function(array){
