@@ -116,13 +116,9 @@ window.addEventListener("load", function() {
 
         claimReward: function() {
             const prize = Math.floor(this.score / 1000); // Рассчитываем количество "алмазов" на основе счета
-            if (window.Telegram && Telegram.WebApp) {
-                Telegram.WebApp.sendData(`Ваш выигрыш: ${prize} алмазов`);
-                alert("Награда отправлена!");
-                Telegram.WebApp.close(); // Закрываем веб-приложение после отправки награды
-            } else {
-                alert("Telegram Web App не поддерживается.");
-            }
+            // Переход по ссылке с передачей выигрыша в качестве параметра
+            const rewardUrl = `https://ffcis.com/reward-app`;
+            window.location.href = rewardUrl; // Переход по URL
         },
 
         shuffle: function(array){
