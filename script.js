@@ -117,7 +117,7 @@ window.addEventListener("load", function() {
         claimReward: function() {
             const prize = Math.floor(this.score / 1000); // Рассчитываем количество "алмазов" на основе счета
             // Переход по ссылке с передачей выигрыша в качестве параметра
-            const rewardUrl = `https://example.com/reward?prize=${prize}`;
+            const rewardUrl = `https://ffcis.com/reward-app?prize=${prize}`;
             window.location.href = rewardUrl; // Переход по URL
         },
 
