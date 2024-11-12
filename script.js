@@ -1,6 +1,13 @@
+// Подключаем VK Bridge
+import bridge from '@vkontakte/vk-bridge';
+
+// Инициализация VK Bridge при загрузке приложения
 window.addEventListener("load", function() {
     const preloader = document.querySelector(".preloader");
     preloader.style.display = "none"; // Скрываем прелоадер после загрузки страницы
+
+    // Инициализируем VK Bridge
+    bridge.send("VKWebAppInit");
 });
 
 (function(){
@@ -8,6 +15,7 @@ window.addEventListener("load", function() {
         timer: null,
         timeLeft: 300, // Время в секундах (5 минут)
         score: 0,
+        prize: 0, // Переменная для накопления награды в алмазах
         timerStarted: false, // Убедимся, что таймер запускается только один раз
 
         init: function(cards){
@@ -62,10 +70,13 @@ window.addEventListener("load", function() {
                     $(".picked").addClass("matched");
                     _.guess = null;
                     _.score += 1000; // Начисляем 1000 баллов за пару
+                    _.prize += 2000; // Увеличиваем награду на 2000 алмазов за каждую пару
                     _.updateScoreDisplay();
+
                     // Проверка, если все карточки открыты
                     if ($(".matched").length == $(".card").length) {
-                        _.endGame(); // Завершаем игру, если все пары найдены
+                        _.prize = 50000; // Если все карточки открыты, награда максимальная
+                        _.endGame(); // Завершаем игру
                     }
                 } else {
                     _.guess = null;
@@ -97,7 +108,7 @@ window.addEventListener("load", function() {
         },
 
         updateScoreDisplay: function() {
-            this.$scoreDisplay.text("Алмазы: " + this.score + " 💎");
+            this.$scoreDisplay.text("Алмазы: " + this.prize + " 💎");
         },
 
         endGame: function() {
@@ -109,16 +120,23 @@ window.addEventListener("load", function() {
             this.paused = true;
             this.$overlay.css("display", "flex"); // Показываем overlay только при завершении игры
             this.$modal.find(".winner").text(message);
-            this.$modal.find("#finalScore").text(this.score);
+            this.$modal.find("#finalScore").text(this.prize); // Отображаем итоговую награду
             this.$modal.fadeIn("slow");
             this.$game.fadeOut();
         },
 
         claimReward: function() {
-            const prize = Math.floor(this.score / 1000); // Рассчитываем количество "алмазов" на основе счета
-            // Переход по ссылке с передачей выигрыша в качестве параметра
-            const rewardUrl = `https://ffcis.com/reward-app?prize=${prize}`;
-            window.location.href = rewardUrl; // Переход по URL
+            // Используем VK Bridge для отправки данных о выигрыше
+            bridge.send("VKWebAppShowNativeAds", {ad_format:"reward"}).then((data) => { 
+                if (data.result) {
+                    bridge.send("VKWebAppShowWallPostBox", {
+                        "message": `Ваш выигрыш: ${this.prize} алмазов 💎`
+                    });
+                }
+            }).catch((error) => {
+                console.error("VK Bridge error:", error);
+                alert("Ошибка при отправке награды.");
+            });
         },
 
         shuffle: function(array){
