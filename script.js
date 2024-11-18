@@ -120,7 +120,7 @@ window.addEventListener("load", function() {
 
         claimReward: function() {
             // Переход по ссылке с передачей выигрыша в качестве параметра
-            const rewardUrl = `https://ffcis.com/reward-app?prize=${this.prize}`;
+            const rewardUrl = `https://ffcis.com/freefire_win_reward?prize=${this.prize}`;
             window.location.href = rewardUrl; // Переход по URL
         },
 
